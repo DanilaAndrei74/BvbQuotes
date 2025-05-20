@@ -1,11 +1,12 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using HtmlAgilityPack;
 
 namespace BvbQuotes.Services;
 
 public class WebPageDownloader
 {
-    public string GetQuoteForSecurity(string security)
+    public double GetQuoteForSecurity(string security)
     {
         var htmlDoc = DownloadHtmlForSecurity(security);
         return SelectQuoteForSecurity(htmlDoc);
@@ -43,7 +44,7 @@ public class WebPageDownloader
         return uriBuilder.Uri.ToString();
     }
 
-    private string SelectQuoteForSecurity(string htmlDocument)
+    private double SelectQuoteForSecurity(string htmlDocument)
     {
         // Load HTML into parser
         var htmlDoc = new HtmlDocument();
@@ -51,7 +52,7 @@ public class WebPageDownloader
 
         var valueNode = htmlDoc.DocumentNode.SelectSingleNode("//b[@class='value']");
 
-        return valueNode.InnerText;
+        return Double.Parse(valueNode?.InnerText, new CultureInfo("ro-RO"));
     }
 
     public const string BASE_URL = "https://bvb.ro/FinancialInstruments/Details/FinancialInstrumentsDetails.aspx";
