@@ -1,0 +1,7 @@
+@BvbQuotes_HostAddress = http://localhost:7226
+@Example_Security = TLV
+
+GET {{BvbQuotes_HostAddress}}/api/quote?symbol={{Example_Security}}
+Accept: application/json
+
+###
