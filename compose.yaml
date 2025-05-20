@@ -1,0 +1,6 @@
+﻿services:
+  bvbquotes:
+    image: bvbquotes
+    build:
+      context: .
+      dockerfile: BvbQuotes/Dockerfile
