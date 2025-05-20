@@ -23,8 +23,14 @@ namespace AzureFunction.BvbQuotes
             var wpd = new WebPageDownloader();
             var quote = wpd.GetQuoteForSecurity(symbol);
 
-            if (string.IsNullOrEmpty(symbol)) return new NotFoundObjectResult("Security not found");
-            else return new OkObjectResult(quote);
+            if (string.IsNullOrEmpty(quote)) return new NotFoundObjectResult("Security not found");
+
+
+            var response = new Response(DateTime.Now, quote);
+
+            return new OkObjectResult(response);
         }
     }
+    
+    public record Response(DateTime Date, string Quote);
 }
