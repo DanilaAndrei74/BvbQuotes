@@ -1,12 +1,13 @@
 ﻿using System.Globalization;
 using System.Text;
+using AzureFunction.BvbQuotes;
 using HtmlAgilityPack;
 
 namespace BvbQuotes.Services;
 
 public class WebPageDownloader
 {
-    public double GetQuoteForSecurity(string security)
+    public SecurityQuote GetQuoteForSecurity(string security)
     {
         var htmlDoc = DownloadHtmlForSecurity(security);
         return SelectQuoteForSecurity(htmlDoc);
@@ -44,15 +45,20 @@ public class WebPageDownloader
         return uriBuilder.Uri.ToString();
     }
 
-    private double SelectQuoteForSecurity(string htmlDocument)
+    private SecurityQuote SelectQuoteForSecurity(string htmlDocument)
     {
         // Load HTML into parser
         var htmlDoc = new HtmlDocument();
         htmlDoc.LoadHtml(htmlDocument);
 
-        var valueNode = htmlDoc.DocumentNode.SelectSingleNode("//b[@class='value']");
+        var quoteNote = htmlDoc.DocumentNode.SelectSingleNode("//b[@class='value']");
+        var dateNote = htmlDoc.DocumentNode.SelectSingleNode("//span[@class='date small']");
 
-        return Double.Parse(valueNode?.InnerText, new CultureInfo("ro-RO"));
+        var securityQuote = new SecurityQuote(
+            DateTime.Parse(dateNote?.InnerText, new CultureInfo("ro-RO")),
+            Double.Parse(quoteNote?.InnerText, new CultureInfo("ro-RO")));
+
+        return securityQuote;
     }
 
     public const string BASE_URL = "https://bvb.ro/FinancialInstruments/Details/FinancialInstrumentsDetails.aspx";

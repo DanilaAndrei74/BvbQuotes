@@ -23,11 +23,9 @@ namespace AzureFunction.BvbQuotes
             var wpd = new WebPageDownloader();
             var quote = wpd.GetQuoteForSecurity(symbol);
 
-            var response = new Response(DateTime.Now, quote);
-
-            return new OkObjectResult(response);
+            return new OkObjectResult(quote);
         }
     }
     
-    public record Response(DateTime Date, double Quote);
+    public record SecurityQuote(DateTime Date, double Quote);
 }
