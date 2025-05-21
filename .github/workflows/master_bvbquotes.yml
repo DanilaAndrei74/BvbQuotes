@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy dotnet core app to Azure Function App - BvbQuotes
+name: Build and deploy dotnet core project to Azure Function App - BvbQuotes
 
 on:
   push:
@@ -15,8 +15,11 @@ env:
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
-    
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write #This is required for requesting the JWT
+      contents: read #This is required for actions/checkout
+
     steps:
       - name: 'Checkout GitHub Action'
         uses: actions/checkout@v4
@@ -27,12 +30,19 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: 'Resolve Project Dependencies Using Dotnet'
-        shell: pwsh
+        shell: bash
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
           dotnet build --configuration Release --output ./output
           popd
       
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_FB84BD2A50D74A21A0488AC6B640EF62 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4E0FF011383743519AEE273476357374 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_AD7CA1E0BDBC4764B453AEFD4197AB2D }}
+
       - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
@@ -40,4 +50,4 @@ jobs:
           app-name: 'BvbQuotes'
           slot-name: 'Production'
           package: '${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/output'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8486F1DF199B4B508DC78A3F274BE646 }}
+          
