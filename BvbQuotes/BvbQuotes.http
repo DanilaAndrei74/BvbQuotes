@@ -1,7 +1,0 @@
-@BvbQuotes_HostAddress = http://localhost:5200
-@Example_Security = TLV
-
-GET {{BvbQuotes_HostAddress}}/security/{{Example_Security}}
-Accept: application/json
-
-###
