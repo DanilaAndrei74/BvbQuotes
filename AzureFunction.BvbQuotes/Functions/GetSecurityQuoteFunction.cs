@@ -20,8 +20,11 @@ namespace AzureFunction.BvbQuotes.Functions
         [Function("quote")]
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequest req)
         {
-            var symbol = req.Query["symbol"].ToString() ?? string.Empty;
+            var symbol = req.Query["symbol"].ToString();
+            if (string.IsNullOrEmpty(symbol)) return new BadRequestObjectResult("Please pass a symbol on the query string");
+            
             var quote = _webPageDownloader.GetQuoteForSecurity(symbol);
+            if(quote is null) return new UnprocessableEntityObjectResult("Request could not be processed");
 
             return new OkObjectResult(quote);
         }

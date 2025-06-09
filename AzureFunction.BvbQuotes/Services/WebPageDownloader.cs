@@ -7,7 +7,7 @@ namespace AzureFunction.BvbQuotes.Services;
 
 public class WebPageDownloader
 {
-    public SecurityQuote GetQuoteForSecurity(string security)
+    public SecurityQuote? GetQuoteForSecurity(string security)
     {
         var htmlDoc = DownloadHtmlForSecurity(security);
         return SelectQuoteForSecurity(htmlDoc);
@@ -43,18 +43,21 @@ public class WebPageDownloader
         return uriBuilder.Uri.ToString();
     }
 
-    private SecurityQuote SelectQuoteForSecurity(string htmlDocument)
+    private SecurityQuote? SelectQuoteForSecurity(string htmlDocument)
     {
-        // Load HTML into parser
         var htmlDoc = new HtmlDocument();
         htmlDoc.LoadHtml(htmlDocument);
 
         var quoteNote = htmlDoc.DocumentNode.SelectSingleNode(ApplicationSettings.BusinessLogicConfiguration.QuoteCss);
         var dateNote = htmlDoc.DocumentNode.SelectSingleNode(ApplicationSettings.BusinessLogicConfiguration.DateCss);
 
-        var securityQuote = new SecurityQuote(
-            DateTime.Parse(dateNote?.InnerText, new CultureInfo(ApplicationSettings.WebConfiguration.Culture)),
-            Double.Parse(quoteNote?.InnerText, new CultureInfo(ApplicationSettings.WebConfiguration.Culture)));
+        var culture = new CultureInfo(ApplicationSettings.WebConfiguration.Culture);
+
+        var securityQuote = 
+            DateTime.TryParse(dateNote?.InnerText, culture, DateTimeStyles.None, out var date) &&
+            double.TryParse(quoteNote?.InnerText, NumberStyles.Any, culture, out var quote)
+                ? new SecurityQuote(date, quote)
+                : null;
 
         return securityQuote;
     }
