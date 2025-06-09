@@ -1,5 +1,5 @@
-using AzureFunction.BvbQuotes.Configuration;
-using AzureFunction.BvbQuotes.Services;
+using BvbQuotes.Functions.Configuration;
+using BvbQuotes.Functions.Services;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;

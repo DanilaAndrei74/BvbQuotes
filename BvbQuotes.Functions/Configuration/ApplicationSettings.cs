@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AzureFunction.BvbQuotes.Configuration;
+namespace BvbQuotes.Functions.Configuration;
 
 public class ApplicationSettings
 {

@@ -1,10 +1,10 @@
-using AzureFunction.BvbQuotes.Services;
+using BvbQuotes.Functions.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace AzureFunction.BvbQuotes.Functions
+namespace BvbQuotes.Functions.Functions
 {
     public class GetSecurityQuoteFunction
     {

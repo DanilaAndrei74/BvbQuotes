@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
-using AzureFunction.BvbQuotes.Configuration;
-using AzureFunction.BvbQuotes.Functions;
+using BvbQuotes.Functions.Configuration;
+using BvbQuotes.Functions.Functions;
 using HtmlAgilityPack;
 
-namespace AzureFunction.BvbQuotes.Services;
+namespace BvbQuotes.Functions.Services;
 
 public class WebPageDownloader
 {
