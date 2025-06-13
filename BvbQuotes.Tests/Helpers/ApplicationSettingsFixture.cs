@@ -23,8 +23,4 @@ public class ApplicationSettingsFixture
 }
 
 [CollectionDefinition("AppSettings collection")]
-public class AppSettingsCollection : ICollectionFixture<ApplicationSettingsFixture>
-{
-    // This class has no code, and is never created.
-    // Its purpose is just to be the [CollectionDefinition]
-}
+public class AppSettingsCollection : ICollectionFixture<ApplicationSettingsFixture>{}

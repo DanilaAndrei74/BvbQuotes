@@ -1,6 +1,5 @@
 ﻿using BvbQuotes.Functions.Configuration;
 using BvbQuotes.Functions.Services;
-using BvbQuotes.Tests.Helpers;
 
 namespace BvbQuotes.Tests.Services;
 
@@ -15,16 +14,27 @@ public class WebPageDownloaderTests
     }
 
     [Fact]
-    public void Wpd_Should_Return_Result()
+    public void GetQuoteForSecurity_Should_Return_Result()
     {
         var result = _sut.GetQuoteForSecurity("TLV");
         Assert.NotNull(result);
     }
     
-    // [Fact]
-    // public void Wpd_GetFullUrl()
-    // {
-    //     var result = _sut.GetFullUrl();
-    //     Assert.NotNull(result);
-    // }
+    [Fact]
+    public void GetFullUrl_Should_Return_Result()
+    {
+        var testString = "TEST";
+        var url = _sut.GetFullUrl(testString);
+        var expected = $"{ApplicationSettings.WebConfiguration.BvbUrl}?s={testString}" ;
+        
+        Assert.Equal(expected, url);
+    }
+
+    [Fact]
+    public void DownloadHtmlForSecurity_Should_Return_Result()
+    {
+        var result = _sut.DownloadHtmlForSecurity("TLV");
+        Assert.NotNull(result);
+    }
+    
 }
