@@ -3,6 +3,4 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
-/.vs/BvbQuotes/FileContentIndex
-/.vs/BvbQuotes
-/.vs/ProjectEvaluation
+/.vs/*

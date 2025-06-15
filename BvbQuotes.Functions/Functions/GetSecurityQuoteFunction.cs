@@ -21,11 +21,18 @@ namespace BvbQuotes.Functions.Functions
         public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get")] HttpRequest req)
         {
             var symbol = req.Query["symbol"].ToString();
+            _logger.LogInformation($"Getting information for {symbol}");
+            
             if (string.IsNullOrEmpty(symbol)) return new BadRequestObjectResult("Please pass a symbol on the query string");
             
             var quote = _webPageDownloader.GetQuoteForSecurity(symbol);
-            if(quote is null) return new UnprocessableEntityObjectResult("Request could not be processed");
+            if (quote is null)
+            {
+                _logger.LogError($"There was a problem while getting information for {symbol}");
+                return new UnprocessableEntityObjectResult("Request could not be processed");
+            }
 
+            _logger.LogInformation($"Returning information for {symbol}: quoted at {quote.Quote} at the time of {quote.Date}");
             return new OkObjectResult(quote);
         }
     }
